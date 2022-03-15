@@ -4,7 +4,7 @@ Utilise (dynamic) heart models to estimate the anatomical changes of the heart d
 <img width="1248" alt="Bildschirmfoto 2022-03-04 um 21 06 51" src="https://user-images.githubusercontent.com/17784338/156834100-9cf8d877-fa4a-40c3-bd7d-78f1f53d919b.png">
 
 ## Useful links:
-Trained network for cardiac segmentation (parameter for trained network are available on the stfc servers): https://github.com/anikpram/cardiac_cine_mri_segmentation
+Trained network for cardiac segmentation (parameter for trained network are available on the stfc servers): https://github.com/anikpram/cardiac_cine_mri_segmentation For this code SimpleITK 2.0.2 is needed. Use: 'pip install SimpleITK==2.0.2'
 
 ACDC challange (data is also already available on the stfc servers): https://acdc.creatis.insa-lyon.fr/
 

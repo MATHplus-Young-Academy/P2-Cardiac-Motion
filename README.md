@@ -3,6 +3,11 @@ Utilise (dynamic) heart models to estimate the anatomical changes of the heart d
 
 <img width="1248" alt="Bildschirmfoto 2022-03-04 um 21 06 51" src="https://user-images.githubusercontent.com/17784338/156834100-9cf8d877-fa4a-40c3-bd7d-78f1f53d919b.png">
 
+> **_Note:_** Make sure to used the newest verson of [Morphomatics](morphomatics.github.io):
+```bash
+pip install -U git+https://github.com/morphomatics/morphomatics.git#egg=morphomatics
+```
+
 ## Useful links:
 Trained network for cardiac segmentation (parameter for trained network are available on the stfc servers): https://github.com/anikpram/cardiac_cine_mri_segmentation For this code SimpleITK 2.0.2 is needed. Use: 'pip install SimpleITK==2.0.2'
 

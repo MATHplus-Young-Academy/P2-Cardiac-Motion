@@ -86,28 +86,26 @@ def crop_label_paper(img):
     return img
 
 #%%paths
-IMG_DIR = "./Datasets"
+
 
 #%%dataset preparation
 
 
 class cardiacdata(Dataset):
 
-    def __init__(self):        
+    def __init__(self, img_dir = "./Datasets/patient021/image.nii.gz", label_dir = './Datasets/patient021/label.nii.gz'):        
 #         ptnum=str(5).zfill(3) 
 #         img_dir = IMG_DIR + '/patient'+ptnum+'/patient'+ptnum+'_4d.nii.gz'
 #         dummy_img = sitk.GetArrayFromImage(sitk.ReadImage(img_dir))
 #         print(dummy_img.shape)
 #         dummy_img = crop_img(dummy_img)
         
-        img_dir = IMG_DIR + '/patient021/image.nii.gz'
         dummy_img = sitk.GetArrayFromImage(sitk.ReadImage(img_dir))
         dummy_img = np.squeeze(dummy_img)
         # print(dummy_img.shape)
         dummy_img = crop_img(dummy_img)
         # print(dummy_img.shape)
         
-        label_dir = IMG_DIR + '/patient021/label.nii.gz'
         dummy_gt = sitk.GetArrayFromImage(sitk.ReadImage(label_dir))
         # print(dummy_gt.shape)
         dummy_gt = np.squeeze(dummy_gt)
@@ -137,13 +135,13 @@ class cardiacdata(Dataset):
 #         dummy_gt = np.concatenate((ed_label,es_label),axis=0)
         
         
-        self.img = np.expand_dims(np.reshape(dummy_img,[dummy_img.shape[0]*dummy_img.shape[1],dummy_img.shape[2],dummy_img.shape[3]]),axis=0)
-        
+        self.img = np.expand_dims(np.reshape(dummy_img,[dummy_img.shape[0]*dummy_img.shape[1],dummy_img.shape[2],dummy_img.shape[3]]),axis=0)    
         self.gt = np.expand_dims(np.reshape(dummy_gt,[dummy_gt.shape[0]*dummy_gt.shape[1],dummy_gt.shape[2],dummy_gt.shape[3]]),axis=0)
         self.len = self.img.shape[0]
         
         print(self.img.shape)
         print(self.gt.shape)
+        return
         
     def __len__(self):
         return self.len

@@ -90,7 +90,7 @@ def crop_label_paper(img):
 
 #%%dataset preparation
 
-class cardiacdata(Dataset):
+class cardiacdata_old(Dataset):
 
     def __init__(self, img_dir = "./Datasets/patient005/patient005_4d.nii.gz", label_dir = r'./Datasets/patient005/patient005_frame01_gt.nii.gz'):        
         IMG_DIR = "./Datasets"
@@ -143,7 +143,7 @@ class cardiacdata(Dataset):
 
         return img,gt
     
-class cardiacdata2(Dataset):
+class cardiacdata(Dataset):
 
     def __init__(self, img_dir = "./Datasets/patient005/patient005_4d.nii.gz", label_dir = r'./Datasets/patient005/patient005_frame01_gt.nii.gz'):        
         dummy_img = sitk.GetArrayFromImage(sitk.ReadImage(img_dir))

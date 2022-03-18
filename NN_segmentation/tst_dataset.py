@@ -90,57 +90,84 @@ def crop_label_paper(img):
 
 #%%dataset preparation
 
-
 class cardiacdata(Dataset):
 
-    def __init__(self, img_dir = "./Datasets/patient021/image.nii.gz", label_dir = './Datasets/patient021/label.nii.gz'):        
-#         ptnum=str(5).zfill(3) 
-#         img_dir = IMG_DIR + '/patient'+ptnum+'/patient'+ptnum+'_4d.nii.gz'
-#         dummy_img = sitk.GetArrayFromImage(sitk.ReadImage(img_dir))
-#         print(dummy_img.shape)
-#         dummy_img = crop_img(dummy_img)
+    def __init__(self, img_dir = "./Datasets/patient005/patient005_4d.nii.gz", label_dir = r'./Datasets/patient005/patient005_frame01_gt.nii.gz'):        
+        IMG_DIR = "./Datasets"
         
+        ptnum=str(5).zfill(3) 
+        img_dir = IMG_DIR + '/patient'+ptnum+'/patient'+ptnum+'_4d.nii.gz'
         dummy_img = sitk.GetArrayFromImage(sitk.ReadImage(img_dir))
-        dummy_img = np.squeeze(dummy_img)
-        # print(dummy_img.shape)
         dummy_img = crop_img(dummy_img)
-        # print(dummy_img.shape)
-        
-        dummy_gt = sitk.GetArrayFromImage(sitk.ReadImage(label_dir))
-        # print(dummy_gt.shape)
-        dummy_gt = np.squeeze(dummy_gt)
-        dummy_gt = crop_img(dummy_gt)
-        
-#         file = open(IMG_DIR + '/patient'+ptnum+'/'+"Info.cfg","r")
-#         es=int(file.read().split("\n")[1].split(":")[1])
-#         es_str=str(es).zfill(2)
-#         gt_dir_es = IMG_DIR + '/patient'+ptnum+'/patient'+ptnum+'_frame'+es_str+'_gt.nii.gz'
-#         es_label = sitk.GetArrayFromImage(sitk.ReadImage(gt_dir_es))
-#         es_label = crop_label(es_label)
-        
-#         file = open(IMG_DIR + '/patient'+ptnum+'/'+"Info.cfg","r")
-#         ed=int(file.read().split("\n")[0].split(":")[1])
-#         ed_str=str(ed).zfill(2)
-#         gt_dir_ed = IMG_DIR + '/patient'+ptnum+'/patient'+ptnum+'_frame'+ed_str+'_gt.nii.gz'
-#         ed_label = sitk.GetArrayFromImage(sitk.ReadImage(gt_dir_ed))
-#         ed_label = crop_label(ed_label)
-        
-#         a = dummy_img[ed-1:ed]
-#         b = dummy_img[es-1:es]
-#         dummy_img = np.concatenate((a,b),axis=0)
-#         dummy_img = normalize_img(dummy_img)
-        
-#         ed_label = np.expand_dims(ed_label,axis=0)
-#         es_label = np.expand_dims(es_label,axis=0)
-#         dummy_gt = np.concatenate((ed_label,es_label),axis=0)
-        
+                
+        file = open(IMG_DIR + '/patient'+ptnum+'/'+"Info.cfg","r")
+        es=int(file.read().split("\n")[1].split(":")[1])
+        es_str=str(es).zfill(2)
+        gt_dir_es = IMG_DIR + '/patient'+ptnum+'/patient'+ptnum+'_frame'+es_str+'_gt.nii.gz'
+        es_label = sitk.GetArrayFromImage(sitk.ReadImage(gt_dir_es))
+        es_label = crop_label(es_label)
+
+        file = open(IMG_DIR + '/patient'+ptnum+'/'+"Info.cfg","r")
+        ed=int(file.read().split("\n")[0].split(":")[1])
+        ed_str=str(ed).zfill(2)
+        gt_dir_ed = IMG_DIR + '/patient'+ptnum+'/patient'+ptnum+'_frame'+ed_str+'_gt.nii.gz'
+        ed_label = sitk.GetArrayFromImage(sitk.ReadImage(gt_dir_ed))
+        ed_label = crop_label(ed_label)
+
+        a = dummy_img[ed-1:ed]
+        b = dummy_img[es-1:es]
+        dummy_img = np.concatenate((a,b),axis=0)
+        dummy_img = normalize_img(dummy_img)
+
+        ed_label = np.expand_dims(ed_label,axis=0)
+        es_label = np.expand_dims(es_label,axis=0)
+        dummy_gt = np.concatenate((ed_label,es_label),axis=0)
+
         
         self.img = np.expand_dims(np.reshape(dummy_img,[dummy_img.shape[0]*dummy_img.shape[1],dummy_img.shape[2],dummy_img.shape[3]]),axis=0)    
         self.gt = np.expand_dims(np.reshape(dummy_gt,[dummy_gt.shape[0]*dummy_gt.shape[1],dummy_gt.shape[2],dummy_gt.shape[3]]),axis=0)
         self.len = self.img.shape[0]
         
-        print(self.img.shape)
-        print(self.gt.shape)
+        return
+        
+    def __len__(self):
+        return self.len
+    
+    def __getitem__(self, i):
+        
+        img = self.img[i]
+        gt = self.gt[i]
+        
+        img = torch.from_numpy(img.astype(np.float32)).unsqueeze(0)
+        gt = torch.from_numpy(gt.astype(np.float32)).long()
+
+        return img,gt
+    
+class cardiacdata2(Dataset):
+
+    def __init__(self, img_dir = "./Datasets/patient005/patient005_4d.nii.gz", label_dir = r'./Datasets/patient005/patient005_frame01_gt.nii.gz'):        
+        dummy_img = sitk.GetArrayFromImage(sitk.ReadImage(img_dir))
+        dummy_img = np.squeeze(dummy_img)
+        # print(dummy_img.shape)
+        dummy_img = crop_img(dummy_img)
+        # print(dummy_img.shape)
+        dummy_img = normalize_img(dummy_img)
+        
+        if not label_dir is None:
+            dummy_gt = sitk.GetArrayFromImage(sitk.ReadImage(label_dir))
+            # print(dummy_gt.shape)
+            dummy_gt = np.squeeze(dummy_gt)
+            dummy_gt = crop_img(dummy_gt)
+        
+        
+        
+        self.img = np.expand_dims(np.reshape(dummy_img,[dummy_img.shape[0]*dummy_img.shape[1],dummy_img.shape[2],dummy_img.shape[3]]),axis=0)    
+        if not label_dir is None:
+            self.gt = np.expand_dims(np.reshape(dummy_gt,[dummy_gt.shape[0]*dummy_gt.shape[1],dummy_gt.shape[2],dummy_gt.shape[3]]),axis=0)
+        else:
+            self.gt = np.zeros(self.img.shape)
+        self.len = self.img.shape[0]
+        
         return
         
     def __len__(self):

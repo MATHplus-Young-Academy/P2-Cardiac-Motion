@@ -25,7 +25,7 @@ def compute(degree, n_knees):
     surfs = [] # <- surf[i][j] holds j-th frame of i-th subject
     
     # setup shape space and Bézierfold
-    M = Kendall(surfs[0][0])
+    M = Kendall(surfs[0][0].shape)
     B = Bezierfold(M, degree)
 
     # map to shape space

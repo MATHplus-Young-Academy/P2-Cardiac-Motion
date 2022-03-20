@@ -22,6 +22,6 @@ Usefule tool to visualise multi-dimensional (nifti) data: http://www.itksnap.org
 ## Literature
 
 > Martin Hanik, Hans-Christian Hege, Christoph von Tycowicz:  
-> **[A Nonlinear Hierarchical Model for Longitudinal Data on Manifolds.](https://opus4.kobv.de/opus4-zib/files/6117/ZIBReport_16-69.pdf)**  
+> **[A Nonlinear Hierarchical Model for Longitudinal Data on Manifolds.](http://arxiv.org/pdf/2202.01180)**  
 > IEEE 19th International Symposium on Biomedical Imaging (ISBI), 2022.</br>
 > [![Preprint](https://img.shields.io/badge/arXiv-2202.01180-red)](http://arxiv.org/abs/2202.01180)
